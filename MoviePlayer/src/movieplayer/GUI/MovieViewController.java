@@ -8,17 +8,25 @@ package movieplayer.GUI;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -36,6 +44,10 @@ public class MovieViewController implements Initializable
     private Label label;
     @FXML
     private MediaView mediaView;
+    @FXML
+    private Slider durationSlider;
+    @FXML
+    private Slider volumeSlider;
 
     /**
      * Initializes the controller class.
@@ -43,7 +55,7 @@ public class MovieViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        // TODO
+        
     }    
 
     @FXML
@@ -71,6 +83,15 @@ public class MovieViewController implements Initializable
             DoubleProperty width = mediaView.fitWidthProperty();
             DoubleProperty height = mediaView.fitHeightProperty();
         }
+        
+        mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+            @Override
+            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+                durationSlider.setValue(newValue.toSeconds());
+                durationSlider.maxProperty().bind(Bindings.createDoubleBinding(() -> mediaPlayer.getTotalDuration().toSeconds(), mediaPlayer.totalDurationProperty()));
+            }
+        });
+        controlSound();
     }
 
     @FXML
@@ -89,6 +110,25 @@ public class MovieViewController implements Initializable
     private void stop(ActionEvent event)
     {
         mediaPlayer.stop();
+    }
+    
+    /*
+    Sets the volume of the video to 100, but also allows changes to the volume by clicking it.
+    */
+    private void controlSound() {
+        volumeSlider.setValue(mediaPlayer.getVolume() * 100);
+        volumeSlider.valueProperty().addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable) {
+                mediaPlayer.setVolume(volumeSlider.getValue() / 100);
+            }
+        });
+    }
+
+    @FXML
+    private void setDuration(MouseEvent event)
+    {
+        mediaPlayer.seek(Duration.seconds(durationSlider.getValue()));
     }
     
 }
