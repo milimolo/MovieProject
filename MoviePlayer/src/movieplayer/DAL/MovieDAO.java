@@ -6,6 +6,7 @@
 package movieplayer.DAL;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -32,6 +33,17 @@ public class MovieDAO
         try (Connection con = cb.getConnection())
         {
             Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM Movie;");
+            while(rs.next())
+            {
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                int duration = rs.getInt("duration");
+                int year = rs.getInt("year");
+                String filePath = rs.getString("filePath");
+                Movie movie = new Movie(id, title, duration, year, filePath);
+                movies.add(movie);
+            }
         }
         return movies;
     }
