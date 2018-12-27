@@ -6,6 +6,7 @@
 package movieplayer.DAL;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -48,4 +49,40 @@ public class MovieDAO
         return movies;
     }
     
+    public Movie createMovie(String title, int duration, int year, String filePath) throws SQLException
+    {
+        String sql = "INSERT INTO Movie (title, duration, year, filePath) VALUE(?,?,?,?);";
+        
+        try (Connection con = cb.getConnection())
+        {
+            PreparedStatement st = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            
+            st.setString(1, title);
+            st.setInt(2, duration);
+            st.setInt(3, year);
+            st.setString(4, filePath);
+            
+            int rowsAffected = st.executeUpdate();
+            
+            ResultSet rs = st.getGeneratedKeys();
+            int id = 0;
+            if(rs.next())
+            {
+                id = rs.getInt(1);
+            }
+            Movie movie = new Movie(id, title, duration, year, filePath);
+            return movie;
+        } 
+    }
+    
+    
+    public void deleteSong(Movie movie) throws SQLException
+    {
+        try (Connection con = cb.getConnection())
+        {
+            Statement statement = con.createStatement();
+            String sql = "DELETE FROM Movie WHERE id = " + movie.getId() + ";";
+            statement.executeUpdate(sql);
+        }
+    }
 }
