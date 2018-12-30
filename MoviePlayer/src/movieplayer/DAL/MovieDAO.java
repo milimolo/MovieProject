@@ -76,7 +76,7 @@ public class MovieDAO
     }
     
     
-    public void deleteSong(Movie movie) throws SQLException
+    public void deleteMovie(Movie movie) throws SQLException
     {
         try (Connection con = cb.getConnection())
         {
