@@ -6,6 +6,7 @@
 package movieplayer.BLL;
 
 import java.sql.SQLException;
+import java.util.List;
 import movieplayer.BE.Movie;
 import movieplayer.DAL.MTDalException;
 import movieplayer.DAL.MovieDAO;
@@ -30,4 +31,22 @@ public class MovieManager
     {
         return mdao.createMovie(title, duration, year, filepath);
     }
+    
+    public List<Movie> getAllMovies() throws SQLException
+    {
+        try
+        {
+            return mdao.getAllMovies();
+        } catch (SQLException ex)
+        {
+            throw new SQLException("Could not read all songs. " + ex.getMessage());
+        }
+
+    }
+    
+    public int getDurationInSec(String filepath) throws MTDalException
+    {
+        return mmd.getDurationInSec(filepath);
+    }
+    
 }

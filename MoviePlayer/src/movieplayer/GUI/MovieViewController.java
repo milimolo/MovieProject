@@ -6,6 +6,7 @@
 package movieplayer.GUI;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.InvalidationListener;
@@ -16,7 +17,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -55,7 +58,6 @@ public class MovieViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        
     }    
 
     @FXML
@@ -129,6 +131,15 @@ public class MovieViewController implements Initializable
     private void setDuration(MouseEvent event)
     {
         mediaPlayer.seek(Duration.seconds(durationSlider.getValue()));
+    }
+
+    @FXML
+    private void addMovie(ActionEvent event) throws IOException
+    {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/movieplayer/GUI/AddMovie.fxml"));
+        Parent root = (Parent) loader.load();
+            
+        AddMovieController amcont = loader.getController();
     }
     
 }
