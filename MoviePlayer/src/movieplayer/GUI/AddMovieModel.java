@@ -34,7 +34,7 @@ public class AddMovieModel
     public void createMovie (String title, int duration, int year, String filepath) throws SQLException
     {
         Movie movie = mm.createMovie(title, duration, year, filepath);
-        
+        movieList.add(movie);        
     }
     
     public void initializeFile()
@@ -78,5 +78,8 @@ public class AddMovieModel
         return mm.getDurationInSec(trueTrueFilePath);
     }
     
-    
+    public String getFilePath()
+    {
+        return trueTrueFilePath;
+    }
 }

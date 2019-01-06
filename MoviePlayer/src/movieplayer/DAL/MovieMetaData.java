@@ -45,7 +45,7 @@ public class MovieMetaData
         } 
         catch (IOException ex)
         {
-            throw new MTDalException("Could not find MP3 file.", ex);
+            throw new MTDalException("Could not find MP4 file.", ex);
         }
         int duration = 0;
         try 

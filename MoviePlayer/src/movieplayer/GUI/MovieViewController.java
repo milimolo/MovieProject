@@ -20,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -29,6 +30,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
@@ -40,6 +42,7 @@ public class MovieViewController implements Initializable
 {
     private MediaPlayer mediaPlayer;
     private String filePath;
+    private AddMovieModel amm;
     
     @FXML
     private Button button;
@@ -140,6 +143,11 @@ public class MovieViewController implements Initializable
         Parent root = (Parent) loader.load();
             
         AddMovieController amcont = loader.getController();
+        amcont.initializeModel(amm);
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
+        
     }
     
 }
