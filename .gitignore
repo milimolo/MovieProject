@@ -39,3 +39,4 @@ nbdist/
 nbproject/project.properties
 
 MyTunes/nbproject/project.properties
+*.properties
